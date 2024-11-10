@@ -89,18 +89,18 @@
 ; render an ast back to a string
 (defn show [expr] (match expr
   #(_ s x) f"λ{s}.{(show x)}"
-  #(f x)   (+
+  #(f x) (+
     (if (and (isinstance f tuple) (= 3 (len x))) f"({(show f)})" f"{(show f)}")
     (if      (isinstance x tuple)                f"({(show x)})" f"{(show x)}")
   )
-  s        s
+  s s
 ))
 
 ; reductions
 (defn substitute [symbol binding expr]
   (setv different False)
   (defn subst [expr] (match expr
-    #(_ s x) (if (= s symbol) #('λ s x) #('λ s (subst x)))
+    #(_ s x) #('λ s (if (= s symbol) x (subst x)))
     #(f x)   #((subst f) (subst x))
     s (if (= s symbol)
       (do
