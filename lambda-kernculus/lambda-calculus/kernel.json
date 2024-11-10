@@ -1,0 +1,8 @@
+{
+    "argv": ["python3",
+        "-m", "lambda-kernculus",
+        "-f", "{connection_file}"
+    ],
+    "display_name": "Lambda Calculus",
+    "language":     "lambda-calculus"
+}
