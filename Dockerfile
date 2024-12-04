@@ -10,13 +10,13 @@ RUN wget -O apl.deb https://www.dyalog.com/uploads/php/download.dyalog.com/downl
     dpkg -i apl.deb && \
     rm apl.deb
 
+# use httpx 0.27.2 because 0.28.0 has an issue
+RUN conda install -y httpx=0.27.2
+
 # change back to original user "jovyan" - from notebook image
 USER jovyan
 
 # # APL kernel installation
-
 RUN pip install dyalog-jupyter-kernel
 
 RUN python -m 'dyalog_kernel' install
-
-RUN 
