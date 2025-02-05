@@ -20,3 +20,8 @@ USER jovyan
 RUN pip install dyalog-jupyter-kernel
 
 RUN python -m 'dyalog_kernel' install
+
+RUN pip install -e .
+
+RUN jupyter kernelspec install --user ./lambda-kernculus/lambda-calculus
+
