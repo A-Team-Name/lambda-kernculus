@@ -4,7 +4,7 @@ from ipykernel.kernelbase import Kernel
 
 # lambda calculus evaluator (written in hy)
 import hy
-from lc import lc
+from .lc import lc
 
 class Kernculus(Kernel):
     implementation         = 'Lambda Calculus'

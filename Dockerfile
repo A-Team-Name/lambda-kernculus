@@ -13,15 +13,20 @@ RUN wget -O apl.deb https://www.dyalog.com/uploads/php/download.dyalog.com/downl
 # use httpx 0.27.2 because 0.28.0 has an issue
 RUN conda install -y httpx=0.27.2
 
-# change back to original user "jovyan" - from notebook image
-USER jovyan
+# Copy in lambda calculus kernel code
+COPY lambda-kernculus/ ./lambda-kernel/lambda-kernculus
+COPY setup.py ./lambda-kernel/setup.py
 
-# # APL kernel installation
+# Give big permission so all can run (should probably be more specific)
+RUN chmod -R 777 ./lambda-kernel/lambda-kernculus
+RUN chmod -R 777 ./lambda-kernel/setup.py
+
+# Install requirements for the kernel
+RUN pip install -e ./lambda-kernel
+
+# Switch to Jovyan user to install kernel for Jupyter
+USER jovyan
+RUN jupyter kernelspec install --user ./lambda-kernel/lambda-kernculus/lambda-calculus
 RUN pip install dyalog-jupyter-kernel
 
 RUN python -m 'dyalog_kernel' install
-
-RUN pip install -e .
-
-RUN jupyter kernelspec install --user ./lambda-kernculus/lambda-calculus
-
