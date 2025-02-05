@@ -8,7 +8,7 @@
 
 ; parser
 ; symbols are strings
-; abstractions are triples with 'λ as first element and parameter as second
+; abstractions are triples with "λ" as first element and parameter as second
 ; applications are pairs of function and argument
 
 ; global state of the parser
@@ -87,11 +87,22 @@
 )
 
 ; render an ast back to a string
-(defn show [expr] (match expr
-  #(_ s x) f"λ{s}.{(show x)}"
-  #(f x) (+
-    (if (and (isinstance f tuple) (= 3 (len x))) f"({(show f)})" f"{(show f)}")
-    (if      (isinstance x tuple)                f"({(show x)})" f"{(show x)}")
+(defn show [expr [merge False]] (match expr
+  #("λ" c x) (do
+    (setv s c)
+    (setv merge-again (and (isinstance x tuple) (= (len x) 3)))
+    (when (not merge)       (setv s (+ "λ" s    )))
+    (when (not merge-again) (setv s (+     s ".")))
+    (+ s (show x merge-again))
+  )
+  #(f x) (do
+    (setv
+      ff (show f)
+      xx (show x)
+    )
+    (when (and (isinstance f tuple) (= (len f) 3)) (setv ff (+ "(" ff ")")))
+    (when      (isinstance x tuple)                (setv xx (+ "(" xx ")")))
+    (+ ff xx)
   )
   s s
 ))
@@ -100,7 +111,7 @@
 (defn substitute [symbol binding expr]
   (setv different False)
   (defn subst [expr] (match expr
-    #(_ s x) #('λ s (if (= s symbol) x (subst x)))
+    #(_ s x) #("λ" s (if (= s symbol) x (subst x)))
     #(f x)   #((subst f) (subst x))
     s (if (= s symbol)
       (do
@@ -120,7 +131,7 @@
     #(#(_ s x) y) (substitute s y x)
     #(_ s x) (do
       (setv [y different] (step x))
-      #(#('λ s y) different)
+      #(#("λ" s y) different)
     )
     #(f x) (do
       (setv [g different] (step f))
