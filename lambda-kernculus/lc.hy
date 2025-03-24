@@ -57,13 +57,16 @@
       (setv out (parse-expression))
       (if (= ")" (setx c (peek)))
         (next)
-        (raise (RuntimeError f"expected '{c}', expected ')'"))
+        (raise (RuntimeError f"unexpected '{c}', expected ')'"))
       )
       out
     )
     "λ" (do
       (next)
-      (parse-body)
+      (if (.isalpha (setx c (peek)))
+        (do (next) #('λ c (parse-body)))
+        (raise (RuntimeError f"unexpected '{c}', expected symbol"))
+      )
     )
     c (if (c.isalpha)
         (do (next) c)
