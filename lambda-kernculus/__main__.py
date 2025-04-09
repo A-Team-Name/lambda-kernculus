@@ -6,6 +6,9 @@ from ipykernel.kernelbase import Kernel
 import hy
 from .lc import lc
 
+# extras
+import traceback
+
 class Kernculus(Kernel):
     implementation         = 'Lambda Calculus'
     implementation_version = '0.0'

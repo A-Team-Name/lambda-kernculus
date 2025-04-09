@@ -44,7 +44,7 @@
   (setv c (peek))
   (next)
   (cond
-    (c.isalpha) #('λ c (parse-body))
+    (c.isalpha) #("λ" c (parse-body))
     (= c ".")   (parse-expression)
     True        (raise (RuntimeError f"unexpected '{c}', expected symbol or '.'"))
   )
@@ -64,7 +64,7 @@
     "λ" (do
       (next)
       (if (.isalpha (setx c (peek)))
-        (do (next) #('λ c (parse-body)))
+        (do (next) #("λ" c (parse-body)))
         (raise (RuntimeError f"unexpected '{c}', expected symbol"))
       )
     )
@@ -112,21 +112,14 @@
 
 ; reductions
 (defn substitute [symbol binding expr]
-  (setv different False)
   (defn subst [expr] (match expr
     #(_ s x) #("λ" s (if (= s symbol) x (subst x)))
     #(f x)   #((subst f) (subst x))
-    s (if (= s symbol)
-      (do
-        (nonlocal different)
-        (setv different True)
-        binding
-      )
-      s
+    s (if (= s symbol) binding s
     )
   ))
   (setv expr (subst expr))
-  #(expr different)
+  #(expr True)
 )
 
 (defn normal-reduce [expr]
