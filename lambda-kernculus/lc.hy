@@ -18,6 +18,15 @@
 (defn peek   [] (global src i) (ensure-not-end) (get src i))
 (defn next   [] (global src i) (+= i 1))
 (defn is-end [] (global src i) (= i (len src)))
+(defn spaces [] (global src i)
+  (while
+    (and
+      (< i (len src))
+      (.isspace (get src i))
+    )
+    (+= i 1)
+  )
+)
 (defn ensure-not-end []
   (when (is-end)
     (raise (RuntimeError f"unexpected end of input"))
@@ -35,6 +44,7 @@
     src code
     i   0
   )
+  (spaces)
   (setv out (parse-expression))
   (ensure-end)
   out
@@ -43,6 +53,7 @@
 (defn parse-body []
   (setv c (peek))
   (next)
+  (spaces)
   (cond
     (c.isalpha) #("λ" c (parse-body))
     (= c ".")   (parse-expression)
@@ -54,22 +65,24 @@
   (setv ast (match (peek)
     "(" (do
       (next)
+      (spaces)
       (setv out (parse-expression))
       (if (= ")" (setx c (peek)))
-        (next)
+        (do (next) (spaces))
         (raise (RuntimeError f"unexpected '{c}', expected ')'"))
       )
       out
     )
     "λ" (do
       (next)
+      (spaces)
       (if (.isalpha (setx c (peek)))
-        (do (next) #("λ" c (parse-body)))
+        (do (next) (spaces) #("λ" c (parse-body)))
         (raise (RuntimeError f"unexpected '{c}', expected symbol"))
       )
     )
     c (if (c.isalpha)
-        (do (next) c)
+        (do (next) (spaces) c)
         (raise (RuntimeError f"unexpected '{c}', expected symbol"))
     )
   ))
