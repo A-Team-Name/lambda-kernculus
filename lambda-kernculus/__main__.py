@@ -10,6 +10,19 @@ from .lc import lc
 import traceback
 
 class Kernculus(Kernel):
+    """Kernculus is a Jupyter kernel for the Lambda Calculus.
+
+    Inherits:
+        Kernel: Jupyter kernel base class.
+
+    Attributes:
+        implementation (str): Name of the kernel implementation.
+        implementation_version (str): Version of the kernel implementation.
+        language (str): Language name.
+        language_version (str): Language version.
+        banner (str): Banner message for the kernel.
+        language_info (dict): Information about the language used in the kernel.
+    """
     implementation         = 'Lambda Calculus'
     implementation_version = '0.0'
     language               = 'lambda-calculus'
@@ -30,6 +43,18 @@ class Kernculus(Kernel):
         user_expressions: dict,
         allow_stdin:      bool,
     ):
+        """Executes the given code in the Lambda Calculus environment.
+
+        Args:
+            code (str): The code to be executed.
+            silent (bool): If True, suppress output.
+            store_history (bool): If True, store the code in history.
+            user_expressions (dict): User-defined expressions to evaluate.
+            allow_stdin (bool): If True, allow standard input.
+
+        Returns:
+            dict[str, Any]: A dictionary containing the execution status, execution count, payload, and user expressions.
+        """
         if not silent:
             try:
                 out = lc(code)

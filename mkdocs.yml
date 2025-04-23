@@ -1,0 +1,22 @@
+site_name: Lambda Kernculus Documentation
+
+theme:
+  name: "material"
+
+nav:
+  - Overview: index.md
+  - Lambda Calculus Parsing: lambda.md
+  - Kernel API: main.md
+
+markdown_extensions:
+  - pymdownx.highlight:
+      anchor_linenums: true
+      line_spans: __span
+      pygments_lang_class: true
+  - pymdownx.inlinehilite
+  - pymdownx.snippets
+  - pymdownx.superfences
+
+plugins:
+  - monorepo
+  - mkdocstrings

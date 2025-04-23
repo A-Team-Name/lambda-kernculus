@@ -1,0 +1,22 @@
+[project]
+name = "lambda-kernculus"
+version = "0.1.0"
+description = ""
+authors = [
+    {name = "jfitz02",email = "jfitz02@outlook.com"}
+]
+readme = "README.md"
+requires-python = ">=3.11,<3.14"
+dependencies = [
+    "hyrule (>=1.0.0,<2.0.0)",
+    "ipykernel (>=6.29.5,<7.0.0)",
+    "mkdocs (>=1.6.1,<2.0.0)",
+    "mkdocstrings[python] (>=0.29.1,<0.30.0)",
+    "mkdocs-material (>=9.6.12,<10.0.0)",
+    "mkdocs-monorepo-plugin (>=1.1.0,<2.0.0)"
+]
+
+
+[build-system]
+requires = ["poetry-core>=2.0.0,<3.0.0"]
+build-backend = "poetry.core.masonry.api"
