@@ -1,7 +1,10 @@
 site_name: Lambda Kernculus Documentation
+repo_url: https://github.com/A-Team-Name/lambda-kernculus
 
 theme:
   name: "material"
+  icon:
+    repo: fontawesome/brands/git-alt
 
 nav:
   - Overview: index.md
