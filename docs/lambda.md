@@ -3,5 +3,5 @@
 ASHER DISCUSS PLEASE
 
 ``` hy title="Hyrule Lambda Calculus Parser"
---8<-- "lambda-kernculus/lc.hy"
+--8<-- "lambda-kernculus/lambda-kernculus/lc.hy"
 ```
