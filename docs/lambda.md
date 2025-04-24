@@ -49,5 +49,14 @@ Once `parse-expression` has parsed an expression, it inspects the next character
 
 ## Reductions
 
+The `normal-reduce` function, and its helpers `substitute` and `step`, reduce the expression represented by an AST to a beta-normal form through normal reduction steps, if such a normal form exists.
 
+`normal-reduce` takes as an argument an expression (as an AST), and returns the expression that results from completely normal-reducing its input. If this process does not converge to a fixpoint after a limited number of steps, a `RuntimeError` is thrown. `normal-reduce` passes control to `step` to handle each of these reduction steps. 
 
+`step` takes as input an expression (as an AST), and performs one normal reduction step on that expression. It returns the new expression, and a boolean value indicating whether this is different to the original expression. When this value is `False`, `normal-reduce` performs no further reduction steps. Consult any academic source for the semantics of the lambda calculus for details of a normal reduction step.
+
+`substitute` takes as arguments a symbol, a AST substitution for that symbol, and an expression to be modified. It returns its input expression, with all (non-shadowed) occurences of its input symbol substituted for its input substitution. Additionally, it returns `True`, to pass through to the output of `step`; we count any substitution step as changing its expression, even if some expressions (for instance `(λx.xx)(λx.xx)`) do not in fact change after a substitution step. This is because the difference called for by `normal-reduce` is with respect to any reduction steps having been performed, rather then the textual change in an expression.
+
+## Serialisation
+
+The `show` function renders an AST back to a string. This is, for the most part, a simple depth-first traversal of an AST, building up a string representation from the bottom-up. One element of additional complexity is supporting shorthand syntax. When recursing, `show` calls itself with the flag `merge` set to true in the event both its current AST node and its next child are abstractions. This prompts the recursive call to not prepend a `λ` to its result, supporting the shortand syntax. Additionally, `show` will only append a `.` in the case where this does not interfere with the shorthand syntax.
