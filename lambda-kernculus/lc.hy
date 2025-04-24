@@ -154,10 +154,15 @@
     )
     s #(s False)
   ))
-  (setv different True)
-  (for [_ (range 100)] ; limit to 100 reduction steps before giving up
+  (setv
+    different True
+    limit     100
+  )
+  (for
+    [_ (range limit)] ; limit to 100 reduction steps before giving up
     (setv [expr different] (step expr))
     (when (not different) (break))
+    (else (raise (RuntimeError f"did not terminate after {limit} reduction steps")))
   )
   expr
 )
