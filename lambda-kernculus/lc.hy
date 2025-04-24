@@ -135,25 +135,26 @@
   #(expr True)
 )
 
-(defn normal-reduce [expr]
-  (defn step [expr] (match expr
-    #(#(_ s x) y) (substitute s y x)
-    #(_ s x) (do
-      (setv [y different] (step x))
-      #(#("λ" s y) different)
-    )
-    #(f x) (do
-      (setv [g different] (step f))
-      (if different
-        #(#(g x) True)
-        (do
-          (setv [y different] (step x))
-          #(#(f y) different)
-        )
+(defn step [expr] (match expr
+  #(#(_ s x) y) (substitute s y x)
+  #(_ s x) (do
+    (setv [y different] (step x))
+    #(#("λ" s y) different)
+  )
+  #(f x) (do
+    (setv [g different] (step f))
+    (if different
+      #(#(g x) True)
+      (do
+        (setv [y different] (step x))
+        #(#(f y) different)
       )
     )
-    s #(s False)
-  ))
+  )
+  s #(s False)
+))
+
+(defn normal-reduce [expr]
   (setv
     different True
     limit     100
