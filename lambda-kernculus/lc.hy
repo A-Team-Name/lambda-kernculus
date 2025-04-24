@@ -155,8 +155,9 @@
     s #(s False)
   ))
   (setv different True)
-  (while different
+  (for [_ (range 100)] ; limit to 100 reduction steps before giving up
     (setv [expr different] (step expr))
+    (when (not different) (break))
   )
   expr
 )
