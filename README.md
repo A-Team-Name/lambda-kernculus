@@ -15,27 +15,8 @@ TODO:
 
 - must
     - [x] basic jupyter interface
-    - [ ] parsing and evaluating lambda calc, returning normal form
-    - [ ] generating and returning typeset images for reductions
+    - [x] parsing and evaluating lambda calc, returning normal form
 - could
+    - generating and returning typeset images for reductions 
     - configuration of normal order, applicative order
     - assignment, types etc
-
-# Dyalog APL
-
-```bash
-
-# if on normal platform:
-
-docker build -t apl-notebook .
-
-docker run -p 8888:8888 apl-notebook
-
-# if not on normal platform (e.g. arm64):
-
-docker buildx build --platform linux/amd64 -t apl-notebook .
-
-docker run -p 8888:8888 apl-notebook
-
-```
-
